@@ -1,17 +1,19 @@
 #include "cie_xyz.h"
 
+// D65 reference white.
+// RGB is ITU-R BT.709 without gamma correction.
 ColorRgb cie_xyz_to_rgb(const CieXyz xyz) {
 	ColorRgb rgb = {
-		.r = 3.240479 * xyz.x - 1.537150* xyz.y - 0.498535 * xyz.z,
-		.g = -0.969256 * xyz.x + 1.875991 * xyz.y + 0.041556 * xyz.z,
-		.b = 0.055648 * xyz.x - 0.204043 * xyz.y + 1.057311 * xyz.z
+		3.240479 * xyz.x - 1.537150* xyz.y - 0.498535 * xyz.z,
+		-0.969256 * xyz.x + 1.875991 * xyz.y + 0.041556 * xyz.z,
+		0.055648 * xyz.x - 0.204043 * xyz.y + 1.057311 * xyz.z
 	};
 	return rgb;
 }
 
 // Spectrum response data for X Y Z at wavelengths 380nm, 381nm, 382nm, ..., 829nm, 830nm
 // The values are taken from PBRT
-const double CIE_X[CIE_XYZ_SAMPLES] = {
+const double CIE_X[] = {
     0.0001299000,   0.0001458470,   0.0001638021,   0.0001840037,
     0.0002066902,   0.0002321000,   0.0002607280,   0.0002930750,
     0.0003293880,   0.0003699140,   0.0004149000,   0.0004641587,
@@ -132,7 +134,9 @@ const double CIE_X[CIE_XYZ_SAMPLES] = {
     0.000001439440, 0.000001341977, 0.000001251141
 };
 
-const double CIE_Y[CIE_XYZ_SAMPLES] = {
+#define CIE_SAMPLE_SIZE sizeof(CIE_X) / sizeof(CIE_X[0])
+
+const double CIE_Y[CIE_SAMPLE_SIZE] = {
     0.000003917000,  0.000004393581,  0.000004929604,  0.000005532136,
     0.000006208245,  0.000006965000,  0.000007813219,  0.000008767336,
     0.000009839844,  0.00001104323,   0.00001239000,   0.00001388641,
@@ -253,7 +257,7 @@ const double CIE_Y[CIE_XYZ_SAMPLES] = {
     0.0000005198080, 0.0000004846123, 0.0000004518100
 };
 
-const double CIE_Z[CIE_XYZ_SAMPLES] = {
+const double CIE_Z[CIE_SAMPLE_SIZE] = {
     0.0006061000,    0.0006808792,    0.0007651456,    0.0008600124,
     0.0009665928,    0.001086000,     0.001220586,     0.001372729,
     0.001543579,     0.001734286,     0.001946000,     0.002177777,
@@ -373,3 +377,5 @@ const double CIE_Z[CIE_XYZ_SAMPLES] = {
     0.0,             0.0,             0.0,             0.0,
     0.0,             0.0,             0.0
 };
+
+const size_t CIE_XYZ_SAMPLES = CIE_SAMPLE_SIZE;
