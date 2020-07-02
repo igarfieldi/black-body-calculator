@@ -1,14 +1,34 @@
 #include "cie_xyz.h"
 
-// D65 reference white.
-// RGB is ITU-R BT.709 without gamma correction.
 ColorRgb cie_xyz_to_rgb(const CieXyz xyz) {
+    // The conversion matrix is taken from http://brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html.
+    // Gamma correction is omitted
 	ColorRgb rgb = {
 		3.240479 * xyz.x - 1.537150* xyz.y - 0.498535 * xyz.z,
 		-0.969256 * xyz.x + 1.875991 * xyz.y + 0.041556 * xyz.z,
 		0.055648 * xyz.x - 0.204043 * xyz.y + 1.057311 * xyz.z
 	};
 	return rgb;
+}
+
+CieXyz cie_spectrum_to_xyz(SpectralRadiance spectralRadiance[static CIE_XYZ_SAMPLES]) {
+    // To convert the spectrum to XYZ, we first have to multiply the spectrum
+    // with the response spectrum of CIE X, Y, and Z. Summing them up gives
+    // us the non-normalized response values of the three channels.
+    // The normalization factor is the integrated response over the wavelength interval
+    // of the Y channel.
+    CieXyz xyz = { 0.0, 0.0, 0.0 };
+    for(size_t i = 0u; i < CIE_XYZ_SAMPLES; ++i) {
+        xyz.x += CIE_X[i] * spectralRadiance[i].value;
+        xyz.y += CIE_Y[i] * spectralRadiance[i].value;
+        xyz.z += CIE_Z[i] * spectralRadiance[i].value;
+    }
+    const double scale = (double)(CIE_XYZ_LAMBDA_END.value - CIE_XYZ_LAMBDA_START.value) / (CIE_Y_INTEGRAL * (double)CIE_XYZ_SAMPLES);
+    xyz.x *= scale;
+    xyz.y *= scale;
+    xyz.z *= scale;
+
+    return xyz;
 }
 
 // Spectrum response data for X Y Z at wavelengths 380nm, 381nm, 382nm, ..., 829nm, 830nm
