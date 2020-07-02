@@ -7,6 +7,7 @@
 extern "C" {
 #endif // __cplusplus
 
+#include "util.h"
 #include <stddef.h>
 
 // Constants for the CIE XYZ sample data
@@ -16,7 +17,7 @@ static const double CIE_Y_INTEGRAL = 106.856895;
 extern const double CIE_X[];
 extern const double CIE_Y[];
 extern const double CIE_Z[];
-extern const size_t CIE_XYZ_SAMPLES;
+#define CIE_XYZ_SAMPLES 471llu
 
 // Represents 
 typedef struct CieXyz {
@@ -40,7 +41,7 @@ ColorRgb cie_xyz_to_rgb(const CieXyz);
  * This function assumes that the spectral radiances are samples from 380 to 830nm in 1nm increments
  * (see CIE_XYZ_LAMBDA_START and CIE_XYZ_LAMBDA_END).
  */
-CieXyz cie_spectrum_to_xyz(SpectralRadiance spectralRadiance[static CIE_XYZ_SAMPLES]);
+CieXyz cie_spectrum_to_xyz(SpectralRadiance spectralRadiance[STATIC_SIZE(CIE_XYZ_SAMPLES)]);
 
 #ifdef __cplusplus
 } // extern "C"

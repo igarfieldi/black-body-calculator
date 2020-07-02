@@ -21,7 +21,7 @@ SpectralRadiance black_body_compute_sample(const Nanometer lambda, const Kelvin 
 
 void black_body_compute_samples(const Nanometer start, const Nanometer end,
 								const size_t samples, const Kelvin temperature,
-								SpectralRadiance spectralRadiance[static samples]) {
+								SpectralRadiance spectralRadiance[STATIC_SIZE(samples)]) {
 	if(start.value < 0.0 || end.value < 0.0 || start.value > end.value || temperature.value < 0.0)
 		return;
 

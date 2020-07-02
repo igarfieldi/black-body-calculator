@@ -11,7 +11,7 @@ ColorRgb cie_xyz_to_rgb(const CieXyz xyz) {
 	return rgb;
 }
 
-CieXyz cie_spectrum_to_xyz(SpectralRadiance spectralRadiance[static CIE_XYZ_SAMPLES]) {
+CieXyz cie_spectrum_to_xyz(SpectralRadiance spectralRadiance[STATIC_SIZE(CIE_XYZ_SAMPLES)]) {
     // To convert the spectrum to XYZ, we first have to multiply the spectrum
     // with the response spectrum of CIE X, Y, and Z. Summing them up gives
     // us the non-normalized response values of the three channels.
@@ -397,5 +397,3 @@ const double CIE_Z[CIE_SAMPLE_SIZE] = {
     0.0,             0.0,             0.0,             0.0,
     0.0,             0.0,             0.0
 };
-
-const size_t CIE_XYZ_SAMPLES = CIE_SAMPLE_SIZE;

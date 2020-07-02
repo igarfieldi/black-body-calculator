@@ -7,6 +7,7 @@
 #include "blackbody.h"
 #include "cie_xyz.h"
 #include "units.h"
+#include "util.h"
 
 typedef struct CmdParameters {
 	Kelvin temperature;
@@ -18,7 +19,7 @@ typedef struct CmdParameters {
 	const char* error;
 } CmdParameters;
 
-static CmdParameters parse_cmd_options(int argc, char* argv[static argc + 1]) {
+static CmdParameters parse_cmd_options(int argc, char* argv[STATIC_SIZE(argc + 1)]) {
 	CmdParameters params = {
 		.printSamples = false,
 		.printNormalizedSamlples = false,
@@ -95,7 +96,7 @@ static CmdParameters parse_cmd_options(int argc, char* argv[static argc + 1]) {
 	return params;
 }
 
-int main(int argc, char* argv[static argc + 1]) {
+int main(int argc, char* argv[STATIC_SIZE(argc + 1)]) {
 	if(argc < 2) {
 		if(argc > 0)
 			fprintf(stderr, "Usage: %s [temperature in Kelvin] [Options]\n"

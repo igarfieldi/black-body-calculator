@@ -2,6 +2,7 @@
 #define BLACKBODY_BLACKBODY_H_
 
 #include "units.h"
+#include "util.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +19,7 @@ extern "C" {
     // Computes N samples of black-body radiation between two given wavelengths
     void black_body_compute_samples(const Nanometer start, const Nanometer end,
                                     const size_t samples, const Kelvin temperature,
-                                    SpectralRadiance spectralRadiance[static samples]);
+                                    SpectralRadiance spectralRadiance[STATIC_SIZE(samples)]);
 
     // Computes the peak wavelength and spectral radiance for the given temperature
     Nanometer black_body_compute_peak_wavelength(const Kelvin T);
